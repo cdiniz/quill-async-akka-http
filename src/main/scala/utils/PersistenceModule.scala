@@ -1,37 +1,22 @@
 package utils
 
-import akka.actor.{ActorPath, ActorSelection, Props, ActorRef}
-import persistence.dal._
-import slick.backend.DatabaseConfig
-import slick.driver.{JdbcProfile}
-import persistence.entities.{SuppliersTable, Supplier}
-import slick.lifted.TableQuery
+import io.getquill.{H2Dialect, JdbcContext, Literal}
+import persistence.dal.{SuppliersDal, SuppliersDalImpl}
 
-
-trait Profile {
-	val profile: JdbcProfile
-}
-
-
-trait DbModule extends Profile{
-	val db: JdbcProfile#Backend#Database
+trait DbContext {
+	val context : JdbcContext[H2Dialect, Literal]
 }
 
 trait PersistenceModule {
-	val suppliersDal: BaseDal[SuppliersTable,Supplier]
+  val suppliersDal : SuppliersDal
 }
 
 
-trait PersistenceModuleImpl extends PersistenceModule with DbModule{
+trait PersistenceModuleImpl extends PersistenceModule with DbContext{
 	this: Configuration  =>
 
-	// use an alternative database configuration ex:
-	// private val dbConfig : DatabaseConfig[JdbcProfile]  = DatabaseConfig.forConfig("pgdb")
-	private val dbConfig : DatabaseConfig[JdbcProfile]  = DatabaseConfig.forConfig("h2db")
+	override val context = new JdbcContext[H2Dialect, Literal]("h2db")
 
-	override implicit val profile: JdbcProfile = dbConfig.driver
-	override implicit val db: JdbcProfile#Backend#Database = dbConfig.db
-
-	override val suppliersDal = new BaseDalImpl[SuppliersTable,Supplier](TableQuery[SuppliersTable]) {}
+	override val suppliersDal = new SuppliersDalImpl
 
 }

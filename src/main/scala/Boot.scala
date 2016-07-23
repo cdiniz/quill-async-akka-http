@@ -11,8 +11,6 @@ object Main extends App with RouteConcatenation with CorsSupport{
   implicit val materializer = ActorMaterializer()
   implicit val ec = modules.system.dispatcher
 
-  modules.suppliersDal.createTable()
-
   val swaggerService = new SwaggerDocService(system)
 
   val bindingFuture = Http().bindAndHandle(

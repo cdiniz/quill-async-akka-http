@@ -1,13 +1,12 @@
 package rest
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
-import entities.JsonProtocol
-import persistence.entities.{SimpleSupplier, Supplier}
-
-import scala.concurrent.Future
-import akka.http.scaladsl.model.StatusCodes._
+import persistence.entities.Supplier
+import persistence.JsonProtocol
 import JsonProtocol._
 import SprayJsonSupport._
+import scala.concurrent.Future
+import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server.ValidationRejection
 
 class RoutesSpec extends AbstractRestTest {
@@ -35,7 +34,7 @@ class RoutesSpec extends AbstractRestTest {
     }
 
     "return an array with 1 suppliers" in {
-      modules.suppliersDal.findById(1) returns Future(Some(Supplier(1,"name 1", "desc 1")))
+      modules.suppliersDal.findById(1) returns Future(Some(Supplier("name 1", "desc 1")))
       Get("/supplier/1") ~> suppliers.routes ~> check {
         handled shouldEqual true
         status shouldEqual OK
@@ -44,8 +43,8 @@ class RoutesSpec extends AbstractRestTest {
     }
 
     "create a supplier with the json in post" in {
-      modules.suppliersDal.insert(Supplier(0,"name 1","desc 1")) returns  Future(1)
-      Post("/supplier",SimpleSupplier("name 1","desc 1")) ~> suppliers.routes ~> check {
+      modules.suppliersDal.insert(Supplier("name 1","desc 1")) returns  Future(1)
+      Post("/supplier",Supplier("name 1","desc 1")) ~> suppliers.routes ~> check {
         handled shouldEqual true
         status shouldEqual Created
       }

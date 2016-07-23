@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS Supplier(
+    name VARCHAR(255),
+    desc VARCHAR(255)
+);
