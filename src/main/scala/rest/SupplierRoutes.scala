@@ -7,15 +7,18 @@ import persistence.JsonProtocol
 import JsonProtocol._
 import SprayJsonSupport._
 import utils.{Configuration, PersistenceModule}
+
 import scala.util.{Failure, Success}
 import io.swagger.annotations._
 import javax.ws.rs.Path
 
-import persistence.entities.Supplier
+import persistence.entities.{Supplier,SimpleSupplier}
+
+import scala.concurrent.ExecutionContext
 
 @Path("/supplier")
 @Api(value = "/supplier", produces = "application/json")
-class SupplierRoutes(modules: Configuration with PersistenceModule)  extends Directives {
+class SupplierRoutes(modules: Configuration with PersistenceModule)(implicit ec: ExecutionContext)  extends Directives {
 
   @Path("/{id}")
   @ApiOperation(value = "Return Supplier", notes = "", nickname = "", httpMethod = "GET")
@@ -33,7 +36,7 @@ class SupplierRoutes(modules: Configuration with PersistenceModule)  extends Dir
       validate(supId > 0,"The supplier id should be greater than zero") {
         onComplete((modules.suppliersDal.findById(supId)).mapTo[Option[Supplier]]) {
           case Success(supplierOpt) => supplierOpt match {
-            case Some(sup) => complete("inserted")//complete(sup)
+            case Some(sup) => complete(sup.toSimpleSupplier)
             case None => complete(NotFound, s"The supplier doesn't exist")
           }
           case Failure(ex) => complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
@@ -54,7 +57,7 @@ class SupplierRoutes(modules: Configuration with PersistenceModule)  extends Dir
   ))
  def supplierPostRoute = path("supplier") {
     post {
-      entity(as[Supplier]) { supplierToInsert => onComplete((modules.suppliersDal.insert(supplierToInsert))) {
+      entity(as[SimpleSupplier]) { supplierToInsert => onComplete((modules.suppliersDal.insert(supplierToInsert.toSupplier))) {
         // ignoring the number of insertedEntities because in this case it should always be one, you might check this in other cases
         case Success(insertedEntities) => complete(Created)
         case Failure(ex) => complete(InternalServerError, s"An error occurred: ${ex.getMessage}")

@@ -4,7 +4,7 @@ import persistence.entities.Supplier
 import org.junit.runner.RunWith
 import org.scalatest.{BeforeAndAfterAll, FunSuite}
 import org.scalatest.junit.JUnitRunner
-
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Await
 import scala.concurrent.duration._
 import akka.util.Timeout
@@ -17,7 +17,7 @@ class SuppliersDALTest extends FunSuite with AbstractPersistenceTest with Before
   }
 
   test("SuppliersActor: Testing Suppliers DAL") {
-    val numberOfEntities : Long = Await.result((modules.suppliersDal.insert(Supplier("sup","desc"))),5.seconds)
+    val numberOfEntities : Long = Await.result((modules.suppliersDal.insert(Supplier(None,"sup","desc"))),5.seconds)
     assert (numberOfEntities == 1)
     val supplier : Option[Supplier] = Await.result((modules.suppliersDal.findById(1)),5.seconds)
     assert (! supplier.isEmpty &&  supplier.get.name.compareTo("sup") == 0)
