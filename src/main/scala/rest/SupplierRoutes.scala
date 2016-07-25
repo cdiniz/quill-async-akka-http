@@ -31,10 +31,9 @@ class SupplierRoutes(modules: Configuration with PersistenceModule)(implicit ec:
     new ApiResponse(code = 404, message = "Return Supplier Not Found"),
     new ApiResponse(code = 500, message = "Internal server error")
   ))
-  def supplierGetRoute = path("supplier" / IntNumber) { (supId) =>
+  def supplierGetRoute = path("supplier" / JavaUUID) { (supId) =>
     get {
-      validate(supId > 0,"The supplier id should be greater than zero") {
-        onComplete((modules.suppliersDal.findById(supId)).mapTo[Option[Supplier]]) {
+        onComplete((modules.suppliersDal.findById(supId.toString)).mapTo[Option[Supplier]]) {
           case Success(supplierOpt) => supplierOpt match {
             case Some(sup) => complete(sup.toSimpleSupplier)
             case None => complete(NotFound, s"The supplier doesn't exist")
@@ -42,7 +41,6 @@ class SupplierRoutes(modules: Configuration with PersistenceModule)(implicit ec:
           case Failure(ex) => complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
         }
       }
-    }
   }
 
   @ApiOperation(value = "Add Supplier", notes = "", nickname = "", httpMethod = "POST", produces = "text/plain")

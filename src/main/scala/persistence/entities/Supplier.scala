@@ -1,9 +1,11 @@
 package persistence.entities
 
-case class Supplier(id : Option[Long], name: String, desc: String) {
-  def toSimpleSupplier = SimpleSupplier(this.name,this.desc)
+import java.util.UUID
+
+case class Supplier(id : String, name: String, description: String) {
+  def toSimpleSupplier = SimpleSupplier(this.name,this.description)
 }
 
 case class SimpleSupplier(name: String, desc: String){
-  def toSupplier = Supplier(None,this.name,this.desc)
+  def toSupplier = Supplier(UUID.randomUUID().toString,this.name,this.desc)
 }

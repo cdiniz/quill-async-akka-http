@@ -1,5 +1,7 @@
 package rest
 
+import java.util.UUID
+
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import persistence.entities.{SimpleSupplier, Supplier}
 import persistence.JsonProtocol
@@ -15,28 +17,22 @@ class RoutesSpec extends AbstractRestTest {
   def actorRefFactory = system
   val modules = new Modules {}
   val suppliers = new SupplierRoutes(modules)
+  lazy val generatedId = UUID.randomUUID().toString
 
   "Supplier Routes" should {
 
     "return an empty array of suppliers" in {
-     modules.suppliersDal.findById(1) returns Future(None)
+     modules.suppliersDal.findById(generatedId) returns Future(None)
 
-      Get("/supplier/1") ~> suppliers.routes ~> check {
+      Get(s"/supplier/$generatedId") ~> suppliers.routes ~> check {
         handled shouldEqual true
         status shouldEqual NotFound
       }
     }
 
-    "return an empty array of suppliers when ask for supplier Bad Request when the supplier is < 1" in {
-      Get("/supplier/0") ~> suppliers.routes ~> check {
-        handled shouldEqual false
-        rejection shouldEqual ValidationRejection("The supplier id should be greater than zero", None)
-      }
-    }
-
     "return an array with 1 suppliers" in {
-      modules.suppliersDal.findById(1) returns Future(Some(Supplier(Some(1),"name 1", "desc 1")))
-      Get("/supplier/1") ~> suppliers.routes ~> check {
+      modules.suppliersDal.findById(generatedId) returns Future(Some(Supplier(generatedId,"name 1", "desc 1")))
+      Get(s"/supplier/$generatedId") ~> suppliers.routes ~> check {
         handled shouldEqual true
         status shouldEqual OK
         responseAs[Option[SimpleSupplier]].isEmpty shouldEqual false
@@ -44,7 +40,7 @@ class RoutesSpec extends AbstractRestTest {
     }
 
     "create a supplier with the json in post" in {
-      modules.suppliersDal.insert(Supplier(None,"name 1","desc 1")) returns  Future(1)
+      modules.suppliersDal.insert(any)(any) returns  Future(1)
       Post("/supplier",SimpleSupplier("name 1","desc 1")) ~> suppliers.routes ~> check {
         handled shouldEqual true
         status shouldEqual Created

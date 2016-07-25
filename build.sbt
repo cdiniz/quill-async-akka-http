@@ -20,7 +20,7 @@ libraryDependencies ++= {
     "org.specs2"          %%  "specs2-mock"   % "2.3.11"  ,
     "org.scalatest" % "scalatest_2.11" % "2.2.1" % "test",
     "junit" % "junit" % "4.11" % "test",
-    "io.getquill" %% "quill-jdbc" % "0.8.0",
+    "io.getquill" %% "quill-async" % "0.8.0",
     "com.typesafe" % "config" % "1.2.1",
     "com.h2database" % "h2" % "1.3.175",
     "org.postgresql" % "postgresql" % "9.4.1208",

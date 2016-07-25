@@ -1,10 +1,10 @@
 package utils
 
-import io.getquill.{H2Dialect, JdbcContext, Literal}
+import io.getquill.{PostgresAsyncContext, SnakeCase}
 import persistence.dal.{SuppliersDal, SuppliersDalImpl}
 
 trait DbContext {
-	val context : JdbcContext[H2Dialect, Literal]
+	val context : PostgresAsyncContext[SnakeCase]
 }
 
 trait PersistenceModule {
@@ -15,8 +15,7 @@ trait PersistenceModule {
 trait PersistenceModuleImpl extends PersistenceModule with DbContext{
 	this: Configuration  =>
 
-	override val context = new JdbcContext[H2Dialect, Literal]("h2db")
-
+	override lazy val context = new PostgresAsyncContext[SnakeCase]("quill")
 	override val suppliersDal = new SuppliersDalImpl(context)
 
 }

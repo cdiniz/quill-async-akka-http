@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS Supplier(
-    id bigint auto_increment,
+    id SERIAL PRIMARY KEY NOT NULL,
     name VARCHAR(255),
     description VARCHAR(255)
 );
