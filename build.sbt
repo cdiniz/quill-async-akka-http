@@ -1,7 +1,7 @@
 
 version       := "0.0.1"
 
-scalaVersion  := "2.11.7"
+scalaVersion  := "2.11.8"
 
 scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
 
@@ -24,7 +24,7 @@ libraryDependencies ++= {
     "com.typesafe" % "config" % "1.2.1",
     "com.h2database" % "h2" % "1.3.175",
     "org.postgresql" % "postgresql" % "9.4.1208",
-    "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
+    "com.typesafe.scala-logging" %% "scala-logging" % "3.4.0",
     "ch.qos.logback" % "logback-classic" % "1.1.3",
     "org.slf4j" % "slf4j-nop" % "1.6.4"
   )
