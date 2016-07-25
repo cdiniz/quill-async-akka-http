@@ -42,6 +42,10 @@ To run all tests (routes and persistence tests):
 
 	curl localhost:8080/supplier/valid-uuid
 
+or just use swagger:
+
+	http://localhost:8080/swagger/index.html
+
 #Credits
 
 To make this template, I just mixed the tutorials and templates, so credits for akka and quill guys, and swagger-akka-http.
