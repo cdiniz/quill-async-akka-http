@@ -4,7 +4,6 @@ The Quill Async Akka Http is a very simple json rest api showing one way of usin
 
 It supports the following features:
 
-* Generic Data Access layer, create a DAL with crud for an entity with just one line
 * Models as case classes (quill main feature)
 * Compile time query generation (quill main feature)
 * Cake pattern for DI
