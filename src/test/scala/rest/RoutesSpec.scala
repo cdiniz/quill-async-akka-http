@@ -10,7 +10,6 @@ import SprayJsonSupport._
 
 import scala.concurrent.Future
 import akka.http.scaladsl.model.StatusCodes._
-import akka.http.scaladsl.server.ValidationRejection
 
 class RoutesSpec extends AbstractRestTest {
 
