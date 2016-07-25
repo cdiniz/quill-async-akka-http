@@ -7,7 +7,6 @@ It supports the following features:
 * Generic Data Access layer, create a DAL with crud for an entity with just one line
 * Models as case classes (quill main feature)
 * Compile time query generation (quill main feature)
-* Multiple database types configured in properties file (h2 and postgresql for instance)
 * Cake pattern for DI
 * Spray-json to parse json
 * Tests for DAL
@@ -25,8 +24,10 @@ The project was thought to be used as an activator template.
 
 You should pre-configure 2 databases on postgres, quill and quilltest, an run the script postgresql-schema.sql to initiate the schema.
 Take a look at application.properties and change the db configuration as you need.
-After,
-        $ sbt run
+After that, just:
+
+
+       $ sbt run
 
 #Testing
 
