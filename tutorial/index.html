@@ -1,104 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Slick Akka Http</title>
+    <title>Quill Async Akka Http</title>
 </head>
 <body>
 <div>
     <h2>Intro</h2>
 
-    <p>The Slick Akka Http is a very simple json rest api showing one way of using akka http with slick 3 library for database access.
+    <p>The Quill Async Akka Http is a very simple json rest api showing one way of using akka http with quill using postgres async.
     </p>
 
     <p> It supports the following features:    </p>
 
-    <ul><li>   Generic Data Access layer, create a DAL with crud for an entity with just one line    </li>
-        <li>   Models as case classes and slick models, independent from database driver and profile    </li>
-        <li>   Multiple database types configured in properties file (h2 and postgresql for instance)    </li>
+    <ul>
+        <li>   Models as case classes (quill main feature)    </li>
+        <li>   Compile time query generation (quill main feature)    </li>
         <li>   Cake pattern for DI    </li>
         <li>   Spray-json to parse json    </li>
         <li>   Cake pattern for DI    </li>
         <li>   Tests for DALs    </li>
         <li>   Tests for routes   </li></ul>
     <p>   Utils:    Typesafe config for property management  and Typesafe Scala Logging (LazyLogging)    </p>
-</div>
-
-<div>
-
-    <h2>Running</h2>
-
-    <p>
-        The project was thought to be used as a seed for creating akka-http projects with slick, so the implementation is minimal. The model is very simple, is a supplier with a name and description.
-</p>  <p>
-    The rest api has a get and a post (json), a get for get all the suppliers, and a post to add suppliers. You should view this info in swagger with more detail.
-</p>  <p>
-    For running the project go to section run, and run it.
-</p>  <p>
-    For running the project in sbt:
-
-    <pre><code>
-    $ sbt
-    > run
-    </code>
-    </pre>
-
-
-</pre>
-</div>
-
-
-
-<div>
-    <h2>Slick 3</h2>
-    <p>Models as case classes and slick 3 schemas extending from a BaseEntity and BaseTable </p>
-
-    <pre><code> case class Supplier(name: String,desc: String)  extends BaseEntity </code></pre>
-
-
-    <pre><code>class SuppliersTable(tag: Tag) extends BaseTable[Supplier](tag, "SUPPLIERS") {
-  def name = column[String]("userID")
-  def desc = column[String]("last_name")
-  def * = (id, name, desc) <> (Supplier.tupled, Supplier.unapply)
-}</code></pre>
-
-
-    <p>BaseEntity and BaseTable provide Id for the class and table.</p>
-
-    
-    <p>The model definition is database independent. The database type is declared in application.conf, for each database. For instance, we use an h2 database in this example with the follow configuration:</p>
-    <pre><code>
-        h2db {
-          driver = "slick.driver.H2Driver$"
-          db {
-            url = "jdbc:h2:mem:test1"
-            driver = org.h2.Driver
-            keepAliveConnection = true
-            numThreads = 10
-          }
-        }
-    </code></pre>
-</div>
-
-<div>
-    <h2>Cake Pattern</h2>
-    <p>This seed uses cake pattern to add the possibility to use alternative implementations of some modules, for instance, in tests, the seed uses an alternative implementation for persistence.
-    <p>The seed are organized in modules: ActorModule, ConfigurationModule and PersistenceModule. When we are implementing a class/actor that uses some of this dependencies, we just mix them with the modules, or put a parameter that receives the injected modules, for instance:</p>
-
-    <pre><code>
-        class RoutesActor(modules: Configuration with PersistenceModule)
-    </code></pre>
-
-</div>
-
-<div>
-    <h2>Generic DAL</h2>
-    <p>This seed has a generic slick dal that can be used to implement a crud for an entity.</p>
-    <p>The generic DAL is used in suppliers DAL as example:</p>
-
-    <pre><code>
-        	override val suppliersDal = new BaseDalImpl[SuppliersTable,Supplier](TableQuery[SuppliersTable]) {}
-    </code></pre>
-
 </div>
 
 </body>
