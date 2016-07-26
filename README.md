@@ -1,5 +1,5 @@
 # quill-async-akka-http
-The Quill Async Akka Http is a very simple json rest api showing one way of using akka http with [quill](https://github.com/quilljs/quill) using postgres async.
+The Quill Async Akka Http is a very simple json rest api showing one way of using akka http with [quill](https://github.com/getquill/quill) using postgres async.
 
 
 It supports the following features:
